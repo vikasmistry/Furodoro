@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furodoro Timer</title>
+
+    <!-- Styles & PWA -->
+    <link rel="stylesheet" href="src/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icon-192x192.png"> <!-- iOS home screen icon -->
+    <meta name="theme-color" content="#4f46e5">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <!-- Main App Wrapper -->
+    <div class="app-container">
+
+        <!-- Timer Display & Progress -->
+        <div class="timer-wrapper">
+            <!-- Use viewBox for better scaling, remove inline width/height -->
+            <svg class="progress-ring" viewBox="0 0 220 220">
+                <circle class="progress-ring__background" stroke-width="8" fill="transparent" r="100" cx="110" cy="110"/>
+                <circle class="progress-ring__circle" stroke-width="8" fill="transparent" r="100" cx="110" cy="110"/>
+            </svg>
+            <!-- Wrapper for text content to overlay on SVG -->
+            <div class="timer-text-content">
+                <div class="time-display">
+                    <span id="minutes">25</span>:<span id="seconds">00</span>
+                </div>
+                <div id="modeIndicator" class="mode-indicator">Work</div>
+                <div class="stats-display-main">
+                    <span id="mainStatDisplay">Total Work: 00:00</span>
+                </div>
+            </div>
+            <!-- END WRAPPER -->
+        </div>
+
+
+        <!-- Main Action Buttons -->
+        <div class="controls">
+            <button id="mainActionBtn" class="control-button" aria-label="Start Work">
+                <i class="fas fa-play"></i>
+            </button>
+            <button id="longBreakResetBtn" class="control-button" aria-label="Start Long Break">
+                <i class="fas fa-bed"></i>
+            </button>
+            <button id="settingsBtn" class="control-button" aria-label="Open Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+            <!-- Theme toggle button - maybe add this later? -->
+            <!-- <button id="themeToggleBtn" class="control-button" aria-label="Switch to Dark Theme">
+                <i class="fas fa-moon"></i>
+            </button> -->
+        </div>
+
+        <!-- Task Selection Dropdowns -->
+        <div class="dropdown-container">
+            <div class="dropdown-item">
+                <select id="taskCategory" name="taskCategory">
+                    <option value="">--Select Category--</option>
+                    <!-- Options populated by apiService.js -->
+                </select>
+            </div>
+            <div class="dropdown-item">
+                <select id="taskSelection" name="taskSelection" disabled> <!-- Starts disabled -->
+                    <option value="">--Select Task--</option>
+                    <!-- Options populated by apiService.js -->
+                </select>
+            </div>
+        </div>
+
+        <!-- Settings Panel (Initially Hidden) -->
+        <div class="settings hidden">
+             <h2>Settings</h2>
+             <div class="setting-item">
+                 <label for="workTime">Work Time (min):</label>
+                 <input type="number" id="workTime" value="25" min="1">
+             </div>
+             <div class="setting-item">
+                 <label for="breakTime">Break Time (min):</label>
+                 <input type="number" id="breakTime" value="5" min="1">
+             </div>
+             <div class="setting-item">
+                 <label for="longBreakTime">Long Break (min):</label>
+                 <input type="number" id="longBreakTime" value="15" min="1">
+             </div>
+             <div class="setting-item">
+                 <label for="workRatio">Work Ratio (Work:Rest):</label>
+                 <span>
+                     <input type="number" id="workRatio" value="3" min="1"> : 1
+                 </span>
+             </div>
+             <button id="applySettings" class="apply-button">Apply & Close</button>
+        </div>
+    </div> <!-- End app-container -->
+
+    <!-- Scripts (Modules) -->
+    <script src="src/apiService.js" type="module"></script> <!-- API logic -->
+    <script src="src/script.js" type="module"></script>      <!-- Main app logic -->
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('SW registered: ', registration.scope);
+                }, err => {
+                    console.log('SW registration failed: ', err); // Log errors for debugging
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

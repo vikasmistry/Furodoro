@@ -2,6 +2,7 @@
 
 A simple, clean Pomodoro timer web application designed to help you focus, with added integration for tracking completed sessions in the [LifeUp](https://github.com/Ayagikei/LifeUp) gamification app.
 
+
 <table>
   <tr>
     <td align="center"><img src="images/SS1.jpg" alt="Work" width="200"/></td>
@@ -13,6 +14,7 @@ A simple, clean Pomodoro timer web application designed to help you focus, with 
 ## Features
 
 *   **Classic Pomodoro Timer:** Standard work, short break, and long break cycles.
+*   **Flomodoro Timer:** Work in a flow with no restrictions and get proportional break durations.
 *   **Configurable Durations:** Easily adjust work, short break, and long break times via the settings panel.
 *   **Work:Rest Ratio:** Configure how much break time you earn relative to your work time.
 *   **Task Integration:**
@@ -27,22 +29,21 @@ A simple, clean Pomodoro timer web application designed to help you focus, with 
 *   **PWA Ready:** Includes a manifest and service worker registration for potential installation.
 *   **(Optional) Dark Mode:** Basic dark mode support can be enabled (requires uncommenting theme button and potentially adding CSS variables).
 
-## How to Use / Setup
+## How to Use
 
 1.  **Prerequisites:**
     *   You need the LifeUp app installed on your device if you want to use the integration feature.
     *   You need the companion local server LifeUp Cloud running (which provides the `/tasks_categories` and `/tasks` endpoints, e.g., at `http://localhost:13276`).
-2.  **Serve the Files:** Serve the `index.html`, `style.css`, `script.js`, `apiService.js`, `manifest.json`, and `service-worker.js` files using a simple local web server. Many tools can do this, for example:
-    *   Using Python: `python -m http.server`
-    *   Using Node.js with `http-server`: `npx http-server`
-3.  **Access:** Open your web browser and navigate to the local address provided by your server (e.g., `http://localhost:8000` or `http://localhost:8080`).
-4.  **Select Task (Optional):** Choose a category and then a specific task from the dropdowns if you want the completed Pomodoro cycle to be logged against that task in LifeUp when you start a long break.
-5.  **Start Timer:** Click the play button (<i class="fas fa-play"></i>) to begin a work session.
-6.  **Take Short Breaks:** When a work session ends, click the main button (<i class="fas fa-pause"></i>) to start a short break. The timer will switch to the calculated break duration. Click the main button (<i class="fas fa-pause"></i>) again during a short break to interrupt it and resume work immediately.
-7.  **Take Long Breaks & Log to LifeUp:** After completing one or more work/short break cycles, click the long break button (<i class="fas fa-bed"></i>).
+2.  **Add to Furodoro to LifeUp shop:**
+    *   First start the LifeUp Cloud Service.
+    *   Search Furodoro in World -> Search `Furodoro`-> Market -> Import to add Furudoro to shop OR use [PWA](https://furodoro.pages.dev/). 
+3.  **Select Task:** Choose a category and then a specific task from the dropdowns if you want the completed Pomodoro cycle to be logged against that task in LifeUp when you start a long break.
+4.  **Start Timer:** Click the play button (▶️) to begin a work session.
+5.  **Take Short Breaks:** Click the main button (⏸️) to start a short break. The timer will switch to the calculated break duration. Click the main button (▶️) again during a short break to interrupt it and resume work immediately.
+7.  **Take Long Breaks & Log to LifeUp:** After completing one or more work/short break cycles, click the long break button (🛏️).
     *   If a task was selected, the app will attempt to redirect to a `lifeup://` URL to log the total work time accumulated since the last long break/reset.
     *   The timer will then switch to the long break duration.
-8.  **Adjust Settings:** Click the cog icon (<i class="fas fa-cog"></i>) to open the settings panel and customize timer durations.
+8.  **Adjust Settings:** Click the cog icon (⚙️) to open the settings panel and customize timer durations.
 
 ## Technologies Used
 

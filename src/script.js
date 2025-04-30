@@ -43,34 +43,36 @@ const MIN_LOGGABLE_WORK_SECONDS = 30; // Minimum duration to log
 let radius = 0;
 let circumference = 0;
 
+// Store SVG Icon HTML strings
+const playIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm6.39-2.908a.75.75 0 01.766.016l3.75 2.25a.75.75 0 010 1.284l-3.75 2.25a.75.75 0 01-1.158-.642V7.092a.75.75 0 01.392-.668z" clip-rule="evenodd" /></svg>`;
+const pauseIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zM8.25 7.25a.75.75 0 00-1.5 0v5.5a.75.75 0 001.5 0v-5.5zM12.25 7.25a.75.75 0 00-1.5 0v5.5a.75.75 0 001.5 0v-5.5z" clip-rule="evenodd" /></svg>`;
+const bedIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zM6.25 6.25a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5h-7.5zM6.25 12.25a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5h-7.5z" clip-rule="evenodd" /></svg>`; // Corrected Stop Square
+const resetIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M15.312 11.342a1.25 1.25 0 010 1.768l-2.5 2.5a1.25 1.25 0 11-1.768-1.768L12.294 12.5H6.75a.75.75 0 010-1.5h5.544l-1.25-1.25a1.25 1.25 0 011.768-1.768l2.5 2.5z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M4.688 8.658a1.25 1.25 0 010-1.768l2.5-2.5a1.25 1.25 0 011.768 1.768L7.706 7.5h5.544a.75.75 0 010 1.5H7.706l1.25 1.25a1.25 1.25 0 11-1.768 1.768l-2.5-2.5z" clip-rule="evenodd" /></svg>`; // Example Reset Icon
+const moonIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M7.455 1.05A8.967 8.967 0 0010 18.5c4.97 0 9-4.03 9-9a8.967 8.967 0 00-7.455-8.45A.75.75 0 0010.75 1a.75.75 0 00-.8.43l-.002.003z" clip-rule="evenodd" /></svg>`;
+const sunIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path d="M10 3a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 3zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM14.142 5.858a.75.75 0 011.06 0l1.06 1.06a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM3.793 15.207a.75.75 0 011.06 0l1.06 1.06a.75.75 0 11-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM17 10a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75A.75.75 0 0117 10zM1.25 10a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75A.75.75 0 011.25 10zM15.207 3.793a.75.75 0 011.06 0l1.06 1.06a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM4.858 14.142a.75.75 0 011.06 0l1.06 1.06a.75.75 0 11-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM10 7a3 3 0 100 6 3 3 0 000-6z" /></svg>`;
+
 // --- Utility Functions ---
 function applyTheme(theme) {
-    const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+    // No longer need themeIcon as we're setting textContent
     const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
     // Remove the light-mode class by default (for dark theme)
     document.body.classList.remove('light-mode');
 
     if (theme === 'light') {
-        // Add light-mode class only for the light theme
+        // Light theme
         document.body.classList.add('light-mode');
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-        }
         if (themeToggleBtn) {
+             themeToggleBtn.innerHTML = moonIconSVG; // Use SVG
              themeToggleBtn.setAttribute('aria-label', 'Switch to Dark Theme');
         }
         if (themeColorMeta) {
             themeColorMeta.content = '#ffffff'; // Light theme background color (or primary if preferred)
         }
     } else {
-        // Dark theme (default)
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
+          // Dark theme (default)
          if (themeToggleBtn) {
+            themeToggleBtn.innerHTML = sunIconSVG; // Use SVG
             themeToggleBtn.setAttribute('aria-label', 'Switch to Light Theme');
         }
         if (themeColorMeta) {
@@ -146,37 +148,31 @@ function updateStatsDisplay() {
 }
 
 function updateButtonStates() {
-    const mainIcon = mainActionBtn ? mainActionBtn.querySelector('i') : null;
-    const longBreakIcon = longBreakResetBtn ? longBreakResetBtn.querySelector('i') : null;
-
-    if (mainIcon && mainActionBtn) {
-        mainIcon.classList.remove('fa-play', 'fa-pause', 'fa-coffee'); // Reset icons
-        if (isPaused) {
-            mainIcon.classList.add('fa-play');
+    // Update text content instead of icon classes
+    if (mainActionBtn) {
+         if (isPaused) {
+            mainActionBtn.innerHTML = playIconSVG; // Use SVG
             mainActionBtn.setAttribute('aria-label', 'Start Work');
         } else { // Timer is running
             if (currentSession === 'longBreak') {
-                // During long break, main button restarts work
-                mainIcon.classList.add('fa-play');
+                mainActionBtn.innerHTML = playIconSVG; // Use SVG
                 mainActionBtn.setAttribute('aria-label', 'Start Work');
             } else {
-                // During work or normal break, main button pauses/starts break
-                mainIcon.classList.add('fa-pause');
-                // Aria label reflects action: Start Break (if work), Resume Work (if break)
+                mainActionBtn.innerHTML = pauseIconSVG; // Use SVG
                 mainActionBtn.setAttribute('aria-label', currentSession === 'work' ? 'Start Break' : 'Resume Work');
             }
         }
     }
 
-    if (longBreakIcon && longBreakResetBtn) {
-        longBreakIcon.classList.remove('fa-bed', 'fa-redo'); // Reset icons
+    if (longBreakResetBtn) {
+        // Update innerHTML with SVG code
         if (currentSession === 'longBreak') {
             // During long break, this button resets the timer
-            longBreakIcon.classList.add('fa-redo');
+            longBreakResetBtn.innerHTML = resetIconSVG; // Use SVG
             longBreakResetBtn.setAttribute('aria-label', 'Reset Timer');
         } else {
             // Otherwise, it starts a long break
-            longBreakIcon.classList.add('fa-bed');
+            longBreakResetBtn.innerHTML = bedIconSVG; // Use SVG
             longBreakResetBtn.setAttribute('aria-label', 'Start Long Break');
         }
     }

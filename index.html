@@ -4,33 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Furodoro Timer</title>
-
-    <!-- Styles & PWA -->
     <link rel="stylesheet" href="src/style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="images/icon-192x192.png"> <!-- iOS home screen icon -->
-    <meta name="theme-color" content="#4f46e5">
-
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="theme-color" content="#000000"> <!-- Default to dark theme color -->
+    <!-- Removed Google Fonts and Font Awesome links -->
 </head>
 <body>
-    <!-- Main App Wrapper -->
     <div class="app-container">
-
-        <!-- Timer Display & Progress -->
         <div class="timer-wrapper">
-            <!-- Use viewBox for better scaling, remove inline width/height -->
             <svg class="progress-ring" viewBox="0 0 220 220">
                 <circle class="progress-ring__background" stroke-width="8" fill="transparent" r="100" cx="110" cy="110"/>
                 <circle class="progress-ring__circle" stroke-width="8" fill="transparent" r="100" cx="110" cy="110"/>
             </svg>
-            <!-- Wrapper for text content to overlay on SVG -->
             <div class="timer-text-content">
                 <div class="time-display">
                     <span id="minutes">25</span>:<span id="seconds">00</span>
@@ -40,92 +26,102 @@
                     <span id="mainStatDisplay">Total Work: 00:00</span>
                 </div>
             </div>
-            <!-- END WRAPPER -->
         </div>
 
-
-        <!-- Main Action Buttons -->
         <div class="controls">
             <button id="mainActionBtn" class="control-button" aria-label="Start Work">
-                <i class="fas fa-play"></i>
+                <!-- Inline SVG Play Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24">
+                  <path fill-rule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm6.39-2.908a.75.75 0 01.766.016l3.75 2.25a.75.75 0 010 1.284l-3.75 2.25a.75.75 0 01-1.158-.642V7.092a.75.75 0 01.392-.668z" clip-rule="evenodd" />
+                </svg>
             </button>
             <button id="longBreakResetBtn" class="control-button" aria-label="Start Long Break">
-                <i class="fas fa-bed"></i>
+                <!-- Inline SVG Stop Square Icon (Corrected) -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24">
+                  <path fill-rule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zM6.25 6.25a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5h-7.5zM6.25 12.25a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5h-7.5z" clip-rule="evenodd" />
+                </svg>
             </button>
             <button id="settingsBtn" class="control-button" aria-label="Open Settings">
-                <i class="fas fa-cog"></i>
+                <!-- Inline SVG Settings/Cog Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24">
+                  <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                </svg>
             </button>
-            <!-- Theme toggle button -->
             <button id="themeToggleBtn" class="control-button" aria-label="Switch Theme">
-                <i class="fas fa-moon"></i>
+                <!-- Inline SVG Sun Icon (Default for dark theme) -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24">
+                  <path d="M10 3a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 3zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM14.142 5.858a.75.75 0 011.06 0l1.06 1.06a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM3.793 15.207a.75.75 0 011.06 0l1.06 1.06a.75.75 0 11-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM17 10a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75A.75.75 0 0117 10zM1.25 10a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75A.75.75 0 011.25 10zM15.207 3.793a.75.75 0 011.06 0l1.06 1.06a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM4.858 14.142a.75.75 0 011.06 0l1.06 1.06a.75.75 0 11-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM10 7a3 3 0 100 6 3 3 0 000-6z" />
+                </svg>
             </button>
         </div>
 
-        <!-- Task Selection Dropdowns -->
         <div class="dropdown-container">
             <div class="dropdown-item">
                 <select id="taskCategory" name="taskCategory">
                     <option value="">--Select Category--</option>
-                    <!-- Options populated by apiService.js -->
+                    <!-- Categories loaded by JS -->
                 </select>
             </div>
             <div class="dropdown-item">
-                <select id="taskSelection" name="taskSelection" disabled> <!-- Starts disabled -->
+                <select id="taskSelection" name="taskSelection" disabled>
                     <option value="">--Select Task--</option>
-                    <!-- Options populated by apiService.js -->
+                    <!-- Tasks loaded by JS -->
                 </select>
             </div>
         </div>
 
-        <!-- Settings Panel (Initially Hidden) -->
+        <!-- Settings Panel -->
         <div class="settings hidden">
-             <h2>Settings</h2>
-             <div class="setting-item">
-                 <label for="workTime">Work Time (min):</label>
-                 <input type="number" id="workTime" value="25" min="1">
-             </div>
-             <div class="setting-item">
-                 <label for="breakTime">Break Time (min):</label>
-                 <input type="number" id="breakTime" value="5" min="1">
-             </div>
-             <div class="setting-item">
-                 <label for="longBreakTime">Long Break (min):</label>
-                 <input type="number" id="longBreakTime" value="15" min="1">
-             </div>
-             <div class="setting-item">
-                 <label for="workRatio">Work Ratio (Work:Rest):</label>
-                 <span>
-                     <input type="number" id="workRatio" value="3" min="1"> : 1
-                 </span>
-             </div>
-             <button id="applySettings" class="apply-button">Apply & Close</button>
+            <button class="close-settings-btn" aria-label="Close Settings">&times;</button>
+            <h2>Settings</h2>
+            <div class="setting-item">
+                <label for="workTime">Work Time (min):</label>
+                <input type="number" id="workTime" value="25" min="1">
+            </div>
+            <div class="setting-item">
+                <label for="breakTime">Break Time (min):</label>
+                <input type="number" id="breakTime" value="5" min="1">
+            </div>
+            <div class="setting-item">
+                <label for="longBreakTime">Long Break (min):</label>
+                <input type="number" id="longBreakTime" value="15" min="1">
+            </div>
+            <div class="setting-item">
+                <label for="workRatio">Work Ratio (Work:Rest):</label>
+                <div class="input-group">
+                    <input type="number" id="workRatio" value="3" min="1">
+                    <span> : 1</span>
+                </div>
+            </div>
+            <button id="applySettings" class="apply-button">Apply & Close</button>
         </div>
 
-            <!-- Footer -->
-    <footer class="app-footer">
-        <a href="https://github.com/vikasmistry/furodoro" target="_blank" rel="noopener noreferrer" aria-label="Furodoro">
-            <i class="fab fa-github"></i> Furodoro
-        </a>
-    </footer>
-    </div> <!-- End app-container -->
+        <footer class="app-footer">
+            <a href="https://github.com/vikasmistry/furodoro" target="_blank" rel="noopener noreferrer" aria-label="Furodoro Git Repository">
+                <!-- Inline SVG Git Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="16" height="16" class="github-icon">
+                  <!-- Git Logo Path Data -->
+                  <path d="M15.698 7.287 8.712.302a1.03 1.03 0 0 0-1.457 0l-1.45 1.45 1.84 1.84a1.223 1.223 0 0 1 1.55 1.55l1.448 1.448a.75.75 0 1 0 1.06-1.06L10.24 4.065l1.58-1.58L15.7 6.363a.75.75 0 1 0 1.06-1.06l-1.062-1.061zM5.935 4.056A.75.75 0 0 0 4.874 5.117l.005.005L4 5.995a.75.75 0 1 0 1.06 1.06l.995-.995-.005-.005a.75.75 0 0 0-1.119-1.004zM8 5.25a.75.75 0 0 0-.75.75v3.5a.75.75 0 0 0 1.5 0V6A.75.75 0 0 0 8 5.25zm-3.148 5.47a.75.75 0 1 0-1.06 1.06l3.47 3.47a1.03 1.03 0 0 0 1.457 0l3.47-3.47a.75.75 0 1 0-1.06-1.06L8 14.156l-3.148-3.436z"/>
+                </svg>
+                Furodoro
+            </a>
+        </footer>
+    </div>
 
-    <!-- Scripts (Modules) -->
-    <script src="src/apiService.js" type="module"></script> <!-- API logic -->
-    <script src="src/script.js" type="module"></script>      <!-- Main app logic -->
-
-    <!-- Service Worker Registration -->
+    <script src="src/apiService.js" type="module"></script>
+    <script src="src/script.js" type="module"></script>
     <script>
+        // Register Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                    console.log('SW registered: ', registration.scope);
-                }, err => {
-                    console.log('SW registration failed: ', err); // Log errors for debugging
-                });
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration.scope);
+                    }, err => {
+                        console.log('SW registration failed: ', err);
+                    });
             });
         }
     </script>
-
-
 </body>
 </html>

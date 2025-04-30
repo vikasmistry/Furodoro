@@ -1,4 +1,4 @@
-const CACHE_NAME = 'furodoro-cache-v1'; // Version your cache
+const CACHE_NAME = 'furodoro-cache-v2'; // Incremented cache version
 
 // List of essential files for the app shell to work offline
 const APP_SHELL_FILES = [
@@ -12,14 +12,10 @@ const APP_SHELL_FILES = [
     '/images/icon-512x512.png',
 ];
 
-// List of external resources (fonts, icons CSS) to cache
-const EXTERNAL_RESOURCES = [
-    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
-    // Note: The actual font files (.woff2) loaded by the above CSS will be cached dynamically by the fetch handler
-];
+// No external resources needed anymore
+const EXTERNAL_RESOURCES = [];
 
-// Combine all resources to cache during installation
+// Only cache the app shell files
 const ALL_RESOURCES_TO_CACHE = [...APP_SHELL_FILES, ...EXTERNAL_RESOURCES];
 
 // Install event: Cache all essential assets
@@ -28,10 +24,9 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[Service Worker] Caching app shell and external resources');
+                console.log('[Service Worker] Caching app shell');
                 // Use addAll for atomic caching (if one fails, none are cached)
-                // For external resources, fetch individually to handle potential CORS issues or failures gracefully
-                const cachePromises = ALL_RESOURCES_TO_CACHE.map(url => {
+                const cachePromises = APP_SHELL_FILES.map(url => { // Only cache APP_SHELL_FILES
                     return fetch(url, { mode: 'cors' }) // Use CORS mode for external resources
                         .then(response => {
                             if (!response.ok) {
@@ -82,11 +77,9 @@ self.addEventListener('fetch', (event) => {
                 // Return cached response if found, otherwise fetch from network
                 return cachedResponse || fetch(event.request).then((networkResponse) => {
                     // Optional: Cache dynamically fetched resources (like font files)
-                    // Be careful not to cache everything (e.g., API POST requests)
                     if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
-                         // Cache fonts or other GET requests if needed
-                         // Example: Cache Font Awesome font files when requested by its CSS
-                         if (event.request.url.includes('fontawesome') || event.request.url.includes('fonts.gstatic.com')) {
+                         // Example: Cache other assets if necessary (e.g., images loaded dynamically)
+                         // if (event.request.url.includes('some-other-asset')) {
                             const responseToCache = networkResponse.clone();
                             caches.open(CACHE_NAME).then((cache) => {
                                 cache.put(event.request, responseToCache);
@@ -101,4 +94,4 @@ self.addEventListener('fetch', (event) => {
                 });
             })
     );
-});// Add paths to other icons if you have more sizes (e.g., 
+});

@@ -1,5 +1,4 @@
-/* Using Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+/* System Font Stack */
 
 :root {
     /* Color Palette */
@@ -31,7 +30,8 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    /* Use a system font stack */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     background-color: var(--background-color); /* Will be black by default */
     color: var(--text-color);
     display: flex;
@@ -60,6 +60,7 @@ body.light-mode {
     --button-text-color: #6b7280; /* text-color-light */
     --button-hover-bg: #f3f4f6;
     --button-hover-text-color: #1f2937; /* text-color */
+    --button-active-bg: #e5e7eb; /* Specific active style for light mode buttons */
 }
 
 .app-container {
@@ -91,6 +92,8 @@ body.light-mode {
 .progress-ring__circle {
     /* Prevent stroke width from scaling with the SVG size */
     vector-effect: non-scaling-stroke;
+    stroke-width: var(--progress-stroke); /* Use CSS variable */
+    fill: none; /* Ensure no fill */
 }
 
 .progress-ring__background {
@@ -154,7 +157,7 @@ body.light-mode {
     background-color: var(--button-bg);
     border: none;
     color: var(--button-text-color);
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Base size, SVG size controlled below */
     padding: 10px;
     cursor: pointer;
     border-radius: 50%;
@@ -164,6 +167,14 @@ body.light-mode {
     justify-content: center;
     align-items: center;
     transition: background-color 0.2s ease, color 0.2s ease;
+    line-height: 1; /* Ensure vertical centering */
+}
+
+/* Style for SVGs inside control buttons */
+.control-button svg {
+    width: 70%; /* Increased size */
+    height: 70%; /* Increased size */
+    /* fill: currentColor; /* This is often set in the SVG itself */
 }
 
 .control-button:hover {
@@ -246,6 +257,12 @@ body.light-mode .control-button:active { /* Specific active style for light mode
     font-weight: 500;
 }
 
+.setting-item .input-group { /* Added for better structure */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .setting-item input[type="number"] {
     width: 65px;
     padding: 8px 10px;
@@ -260,13 +277,11 @@ body.light-mode .control-button:active { /* Specific active style for light mode
 .setting-item input[type="number"]:focus {
     outline: none;
     border-color: var(--primary-color); /* Use variable */
-    box-shadow: 0 0 0 2px var(--primary-color-light);
+    box-shadow: 0 0 0 2px var(--primary-color-focus-shadow); /* Use variable */
 }
 
 /* Work Ratio Specific Style */
-.setting-item span input[type="number"] {
-    margin-right: 4px;
-}
+/* Removed redundant .setting-item span input[type="number"] */
 .setting-item span {
     display: inline-flex;
     align-items: center;
@@ -315,14 +330,14 @@ body.light-mode .control-button:active { /* Specific active style for light mode
 .dropdown-item select {
     padding: 6px 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
-    border-color: var(--border-color); /* Use variable */
+    border: 1px solid var(--border-color); /* Use variable */
     min-width: 150px;
     background-color: var(--button-bg); /* Match button bg */
     color: var(--text-color); /* Use variable */
     font-family: inherit;
     font-size: 0.95em;
     cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Added transition */
 }
 
 .dropdown-item select:focus {
@@ -332,19 +347,7 @@ body.light-mode .control-button:active { /* Specific active style for light mode
 }
 
 
-/* Adjust icon for theme toggle */
-/* Default (Dark Mode) shows Sun Icon */
-#themeToggleBtn i {
-    content: "\f185"; /* Font Awesome sun icon unicode */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-}
-/* Light Mode shows Moon Icon */
-body.light-mode #themeToggleBtn i {
-    content: "\f186"; /* Font Awesome moon icon unicode */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-}
+/* Removed Font Awesome specific icon rules */
 
 
 /* Responsive Adjustments */
@@ -366,7 +369,7 @@ body.light-mode #themeToggleBtn i {
         gap: 15px;
     }
     .control-button {
-        font-size: 1.3rem;
+        /* font-size: 1.3rem; */ /* Font size less relevant for SVG */
         width: 45px;
         height: 45px;
     }
@@ -411,6 +414,7 @@ body.light-mode #themeToggleBtn i {
 .app-footer a {
   color: var(--text-color-secondary); /* Use variable */
   text-decoration: none; /* Remove underline */
+  transition: color 0.2s ease; /* Added transition */
 }
 
 .app-footer a:hover {
@@ -418,7 +422,11 @@ body.light-mode #themeToggleBtn i {
   text-decoration: underline; /* Add underline on hover */
 }
 
-.app-footer .fab {
+/* Style for GitHub icon in footer */
+.app-footer a svg.github-icon {
+    width: 1em; /* Match font size */
+    height: 1em;
+    vertical-align: -0.15em; /* Adjust vertical alignment */
     margin-right: 0.3em; /* Space between icon and text */
 }
 

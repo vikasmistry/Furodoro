@@ -10,7 +10,7 @@ A simple, clean Pomodoro timer web application designed to help you focus, with 
     <td align="center"><img src="images/SS3.jpg" alt="Settings" width="200"/></td>
   </tr>
 </table>
-
+http://127.0.0.1:5500/
 ## Features
 
 *   **Classic Pomodoro Timer:** Standard work, short break, and long break cycles.
@@ -39,19 +39,17 @@ A simple, clean Pomodoro timer web application designed to help you focus, with 
     *   Search Furodoro in World -> Search `Furodoro`-> Market -> Import to add Furudoro to shop OR use [PWA](https://furodoro.pages.dev/). 
 3.  **Select Task:** Choose a category and then a specific task from the dropdowns if you want the completed Pomodoro cycle to be logged against that task in LifeUp when you start a long break.
 4.  **Start Timer:** Click the play button (▶️) to begin a work session.
-5.  **Take Short Breaks:** Click the main button (⏸️) to start a short break. The timer will switch to the calculated break duration. Click the main button (▶️) again during a short break to interrupt it and resume work immediately.
-7.  **Take Long Breaks & Log to LifeUp:** After completing one or more work/short break cycles, click the long break button (🛏️).
+5.  **Take Short Breaks:** Click the main button (now showing ⏸️) during a work session to start a short break. The timer will switch to the calculated break duration. Click the main button (now showing ▶️) again during a short break to interrupt it and resume work immediately.
+7.  **Take Long Breaks & Log to LifeUp:** After completing one or more work/short break cycles, click the long break button (🛌).
     *   If a task was selected, the app will attempt to redirect to a `lifeup://` URL to log the total work time accumulated since the last long break/reset.
     *   The timer will then switch to the long break duration.
-8.  **Adjust Settings:** Click the cog icon (⚙️) to open the settings panel and customize timer durations.
+8.  **Adjust Settings:** Click the settings button (⚙️) to open the settings panel and customize timer durations.
 
 ## Technologies Used
 
 *   HTML5
 *   CSS3 (including CSS Variables / Custom Properties)
 *   Vanilla JavaScript (ES6 Modules)
-*   Font Awesome (for icons)
-*   Google Fonts (Inter)
 
 ## Future Ideas
 
@@ -59,7 +57,7 @@ A simple, clean Pomodoro timer web application designed to help you focus, with 
 - [x]   Implement the theme toggle button.
 - [ ]   Persist selected task across sessions.
 - [ ]   Add more robust error handling for API calls.
-- [ ]   Improve PWA offline capabilities.
+- [x]   Improve PWA offline capabilities (basic app shell caching implemented).
 
 ---
 

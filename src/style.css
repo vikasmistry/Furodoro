@@ -19,7 +19,7 @@
     --button-hover-text-color: #e2e8f0; /* Brighter icon/text on hover */
 
     /* Sizes */
-    --timer-size: 220px;
+    --timer-size: 250px; /* Increased timer size */
     --progress-stroke: 8px;
 }
 
@@ -37,7 +37,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh; /* Use dynamic viewport height */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden; /* Prevent horizontal scroll */
@@ -67,7 +67,7 @@ body.light-mode {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 90%;
+    width: 95%; /* Slightly increase width */
     max-width: 400px;
 }
 
@@ -353,7 +353,11 @@ body.light-mode .control-button:active { /* Specific active style for light mode
 /* Responsive Adjustments */
 @media (max-width: 480px) {
     :root {
-        --timer-size: 180px; /* Smaller timer on mobile */
+        --timer-size: 290px; /* Increased mobile timer size */
+    }
+    .app-container {
+        width: 100%; /* Take up more width on small screens */
+        max-width: none; /* Remove max-width constraint */
     }
     .time-display {
         font-size: 2.8rem;

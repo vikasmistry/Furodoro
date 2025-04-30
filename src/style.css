@@ -19,7 +19,7 @@
     --button-hover-text-color: #e2e8f0; /* Brighter icon/text on hover */
 
     /* Sizes */
-    --timer-size: 220px; /* Increased timer size */
+    --timer-size: 300px; /* Increased timer size */
     --progress-stroke: 8px;
 }
 
@@ -353,7 +353,7 @@ body.light-mode .control-button:active { /* Specific active style for light mode
 /* Responsive Adjustments */
 @media (max-width: 480px) {
     :root {
-        --timer-size: 290px; /* Increased mobile timer size */
+        --timer-size: 300px; /* Increased mobile timer size */
     }
     .app-container {
         width: 100%; /* Take up more width on small screens */

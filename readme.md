@@ -55,11 +55,11 @@ A simple, clean Pomodoro timer web application designed to help you focus, with 
 
 ## Future Ideas
 
-*   Add sound notifications for session completion.
-*   Implement the theme toggle button.
-*   Persist selected task across sessions.
-*   Add more robust error handling for API calls.
-*   Improve PWA offline capabilities.
+- [ ]   Add sound notifications for session completion.
+- [x]   Implement the theme toggle button.
+- [ ]   Persist selected task across sessions.
+- [ ]   Add more robust error handling for API calls.
+- [ ]   Improve PWA offline capabilities.
 
 ---
 

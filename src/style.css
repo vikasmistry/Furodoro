@@ -3,16 +3,21 @@
 
 :root {
     /* Color Palette */
-    --background-color: #ffffff;
-    --text-color: #1f2937;
-    --text-color-light: #6b7280;
-    --primary-color: #4f46e5;
-    --primary-color-light: #e0e7ff;
-    --progress-background: #e5e7eb;
-    --border-color: #d1d5db;
-    --settings-bg: #f9fafb;
-    --button-hover-bg: #f3f4f6;
-    --button-active-bg: #e5e7eb;
+    --background-color: #000000;        /* AMOLED Black */
+    --container-bg: #111111;          /* Very dark grey for container */
+    --text-color: #ffffff;            /* White text */
+    --text-color-secondary: #a0aec0;  /* Lighter grey for secondary text */
+    --text-color-tertiary: #cbd5e0;   /* Slightly brighter grey for labels etc. */
+    --primary-color: #6366f1;          /* Accent color (same as before, adjusted dark mode) */
+    --primary-color-hover: #4338ca;    /* Darker accent for hover */
+    --primary-color-focus-shadow: rgba(99, 102, 241, 0.3); /* Adjusted focus shadow */
+    --progress-background: #2a2a2a;      /* Dark grey progress background */
+    --border-color: #2a2a2a;          /* Dark border */
+    --settings-bg: #111111;          /* Match container */
+    --button-bg: #1f1f1f;             /* Dark grey button background */
+    --button-text-color: #cccccc;     /* Dimmer icon/text color */
+    --button-hover-bg: #333333;       /* Lighter grey on hover */
+    --button-hover-text-color: #e2e8f0; /* Brighter icon/text on hover */
 
     /* Sizes */
     --timer-size: 220px;
@@ -27,7 +32,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--background-color);
+    background-color: var(--background-color); /* Will be black by default */
     color: var(--text-color);
     display: flex;
     justify-content: center;
@@ -38,11 +43,29 @@ body {
     overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
+/* Define Light Theme Variables */
+body.light-mode {
+    --background-color: #ffffff;
+    --container-bg: #ffffff; /* Light container */
+    --text-color: #1f2937;
+    --text-color-secondary: #6b7280;
+    --text-color-tertiary: #6b7280; /* Same as secondary in light */
+    --primary-color: #4f46e5;
+    --primary-color-hover: #4338ca;
+    --primary-color-focus-shadow: rgba(79, 70, 229, 0.3); /* Original focus shadow */
+    --progress-background: #e5e7eb;
+    --border-color: #d1d5db;
+    --settings-bg: #f9fafb;
+    --button-bg: transparent;
+    --button-text-color: #6b7280; /* text-color-light */
+    --button-hover-bg: #f3f4f6;
+    --button-hover-text-color: #1f2937; /* text-color */
+}
+
 .app-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
     width: 90%;
     max-width: 400px;
 }
@@ -95,7 +118,7 @@ body {
 .time-display {
     font-size: 3.5rem;
     font-weight: 500;
-    color: var(--text-color);
+    color: var(--text-color); /* Primary text color */
     line-height: 1;
     margin-bottom: 8px;
     user-select: none;
@@ -104,7 +127,7 @@ body {
 .mode-indicator {
     font-size: 1rem;
     font-weight: 500;
-    color: var(--text-color-light);
+    color: var(--text-color-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     user-select: none;
@@ -113,7 +136,7 @@ body {
 
 .stats-display-main {
     font-size: 0.9rem;
-    color: var(--text-color-light);
+    color: var(--text-color-secondary);
     user-select: none;
     min-height: 1.2em; /* Reserve space even when empty */
     text-align: center;
@@ -128,9 +151,9 @@ body {
 }
 
 .control-button {
-    background-color: transparent;
+    background-color: var(--button-bg);
     border: none;
-    color: var(--text-color-light);
+    color: var(--button-text-color);
     font-size: 1.5rem;
     padding: 10px;
     cursor: pointer;
@@ -144,11 +167,11 @@ body {
 }
 
 .control-button:hover {
-    background-color: var(--button-hover-bg);
-    color: var(--text-color);
+    background-color: var(--button-hover-bg); /* Use variable */
+    color: var(--button-hover-text-color); /* Use variable */
 }
 
-.control-button:active {
+body.light-mode .control-button:active { /* Specific active style for light mode */
     background-color: var(--button-active-bg);
 }
 
@@ -163,7 +186,7 @@ body {
     width: 85%; /* Adjust width as needed */
     max-width: 320px; /* Max width on larger screens */
 
-    background-color: var(--settings-bg);
+    background-color: var(--settings-bg); /* Use variable */
     /* Add border-right */
     border-right: 1px solid var(--border-color);
 
@@ -191,7 +214,7 @@ body {
     font-size: 1.25rem;
     font-weight: 500;
     margin-bottom: 30px;
-    color: var(--text-color);
+    color: var(--text-color); /* Use variable */
 }
 
 /* Optional: Add a close button inside the settings panel */
@@ -202,7 +225,7 @@ body {
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: var(--text-color-light);
+    color: var(--text-color-secondary); /* Use variable */
     cursor: pointer;
     padding: 5px;
     line-height: 1; /* Adjust for better vertical alignment */
@@ -218,7 +241,7 @@ body {
 }
 
 .setting-item label {
-    color: var(--text-color-light);
+    color: var(--text-color-tertiary); /* Use variable */
     flex-shrink: 0;
     font-weight: 500;
 }
@@ -230,13 +253,13 @@ body {
     border-radius: 6px;
     font-size: 0.95rem;
     text-align: center;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: var(--button-bg); /* Match button bg for consistency */
+    color: var(--text-color); /* Primary text color */
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .setting-item input[type="number"]:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--primary-color); /* Use variable */
     box-shadow: 0 0 0 2px var(--primary-color-light);
 }
 
@@ -247,13 +270,13 @@ body {
 .setting-item span {
     display: inline-flex;
     align-items: center;
-    color: var(--text-color-light);
+    color: var(--text-color-tertiary); /* Use variable */
 }
 
 .apply-button {
     width: 100%;
     padding: 12px 20px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-color); /* Use variable */
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -264,7 +287,7 @@ body {
     transition: background-color 0.2s ease;
 }
 .apply-button:hover {
-    background-color: #4338ca; /* Darker indigo */
+    background-color: var(--primary-color-hover); /* Use variable */
 }
 
 .dropdown-container {
@@ -285,7 +308,7 @@ body {
 .dropdown-item label {
     margin-bottom: 5px;
     font-size: 0.9em;
-    color: #666;
+    color: var(--text-color-secondary); /* Use variable */
     font-weight: 500;
 }
 
@@ -293,18 +316,36 @@ body {
     padding: 6px 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    border-color: var(--border-color); /* Use variable */
     min-width: 150px;
-    background-color: #fff;
+    background-color: var(--button-bg); /* Match button bg */
+    color: var(--text-color); /* Use variable */
     font-family: inherit;
     font-size: 0.95em;
     cursor: pointer;
 }
 
 .dropdown-item select:focus {
-    outline: none;
-    border-color: #4f46e5; /* Match theme color */
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3);
+     outline: none;
+     border-color: var(--primary-color); /* Use variable */
+     box-shadow: 0 0 0 2px var(--primary-color-focus-shadow); /* Use variable */
 }
+
+
+/* Adjust icon for theme toggle */
+/* Default (Dark Mode) shows Sun Icon */
+#themeToggleBtn i {
+    content: "\f185"; /* Font Awesome sun icon unicode */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+/* Light Mode shows Moon Icon */
+body.light-mode #themeToggleBtn i {
+    content: "\f186"; /* Font Awesome moon icon unicode */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
 
 /* Responsive Adjustments */
 @media (max-width: 480px) {
@@ -368,12 +409,12 @@ body {
 }
 
 .app-footer a {
-  color: #6b7280; /* Example color - adjust as needed */
+  color: var(--text-color-secondary); /* Use variable */
   text-decoration: none; /* Remove underline */
 }
 
 .app-footer a:hover {
-  color: #4f46e5; /* Example hover color - adjust as needed */
+  color: var(--primary-color); /* Use variable */
   text-decoration: underline; /* Add underline on hover */
 }
 

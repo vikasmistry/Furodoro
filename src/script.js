@@ -30,7 +30,7 @@ let totalWorkTimeElapsed = 0; // Net work time accumulated (work seconds - break
 let grossWorkTimeAccumulated = 0; // Total seconds spent in 'work' mode during the current run
 let workRatio; // How many work units earn 1 break unit
 const breakRatio = 1; // How many break units are earned (usually 1)
-let currentTheme = localStorage.getItem('theme') || 'light';
+let currentTheme = localStorage.getItem('theme') || 'dark'; // Default to dark theme
 
 // --- Constants ---
 const DEFAULT_WORK_TIME = 25;
@@ -46,33 +46,41 @@ let circumference = 0;
 // --- Utility Functions ---
 function applyTheme(theme) {
     const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
-    if (theme === 'dark') {
-        document.body.classList.add('dark-mode');
-        if (themeIcon) {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
-        if (themeToggleBtn) {
-             themeToggleBtn.setAttribute('aria-label', 'Switch to Light Theme');
-        }
-    } else {
-        document.body.classList.remove('dark-mode');
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+
+    // Remove the light-mode class by default (for dark theme)
+    document.body.classList.remove('light-mode');
+
+    if (theme === 'light') {
+        // Add light-mode class only for the light theme
+        document.body.classList.add('light-mode');
         if (themeIcon) {
             themeIcon.classList.remove('fa-sun');
             themeIcon.classList.add('fa-moon');
         }
-         if (themeToggleBtn) {
-            themeToggleBtn.setAttribute('aria-label', 'Switch to Dark Theme');
+        if (themeToggleBtn) {
+             themeToggleBtn.setAttribute('aria-label', 'Switch to Dark Theme');
         }
-    }
-    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-    if (themeColorMeta) {
-        themeColorMeta.content = theme === 'dark' ? '#111827' : '#4f46e5';
+        if (themeColorMeta) {
+            themeColorMeta.content = '#ffffff'; // Light theme background color (or primary if preferred)
+        }
+    } else {
+        // Dark theme (default)
+        if (themeIcon) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+         if (themeToggleBtn) {
+            themeToggleBtn.setAttribute('aria-label', 'Switch to Light Theme');
+        }
+        if (themeColorMeta) {
+            themeColorMeta.content = '#000000'; // Dark theme background color
+        }
     }
 }
 
 function toggleTheme() {
-    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark'; // Toggle logic reversed
     localStorage.setItem('theme', currentTheme);
     applyTheme(currentTheme);
 }

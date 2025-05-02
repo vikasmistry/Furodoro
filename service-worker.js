@@ -1,4 +1,4 @@
-const CACHE_NAME = 'furodoro-cache-v2'; // Incremented cache version
+const CACHE_NAME = 'furodoro-cache-v2.1'; // Incremented cache version
 
 // List of essential files for the app shell to work offline
 const APP_SHELL_FILES = [

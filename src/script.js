@@ -32,6 +32,7 @@ let workRatio; // How many work units earn 1 break unit
 const breakRatio = 1; // How many break units are earned (usually 1)
 let currentTheme = localStorage.getItem('theme') || 'dark'; // Default to dark theme
 
+let wakeLock = null; // Screen Wake Lock
 // --- Constants ---
 const DEFAULT_WORK_TIME = 25;
 const DEFAULT_WORK_RATIO = 3;
@@ -50,6 +51,55 @@ const bedIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" 
 const resetIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M15.312 11.342a1.25 1.25 0 010 1.768l-2.5 2.5a1.25 1.25 0 11-1.768-1.768L12.294 12.5H6.75a.75.75 0 010-1.5h5.544l-1.25-1.25a1.25 1.25 0 011.768-1.768l2.5 2.5z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M4.688 8.658a1.25 1.25 0 010-1.768l2.5-2.5a1.25 1.25 0 011.768 1.768L7.706 7.5h5.544a.75.75 0 010 1.5H7.706l1.25 1.25a1.25 1.25 0 11-1.768 1.768l-2.5-2.5z" clip-rule="evenodd" /></svg>`; // Example Reset Icon
 const moonIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M7.455 1.05A8.967 8.967 0 0010 18.5c4.97 0 9-4.03 9-9a8.967 8.967 0 00-7.455-8.45A.75.75 0 0010.75 1a.75.75 0 00-.8.43l-.002.003z" clip-rule="evenodd" /></svg>`;
 const sunIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="24" height="24"><path d="M10 3a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 3zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM14.142 5.858a.75.75 0 011.06 0l1.06 1.06a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM3.793 15.207a.75.75 0 011.06 0l1.06 1.06a.75.75 0 11-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM17 10a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75A.75.75 0 0117 10zM1.25 10a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75A.75.75 0 011.25 10zM15.207 3.793a.75.75 0 011.06 0l1.06 1.06a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM4.858 14.142a.75.75 0 011.06 0l1.06 1.06a.75.75 0 11-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zM10 7a3 3 0 100 6 3 3 0 000-6z" /></svg>`;
+
+// --- Screen Wake Lock Functions ---
+const requestWakeLock = async () => {
+    if ('wakeLock' in navigator) {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Screen Wake Lock activated.');
+            wakeLock.addEventListener('release', () => {
+                // This happens if the system releases the lock (e.g., battery low)
+                // or if releaseWakeLock() is called.
+                console.log('Screen Wake Lock released.');
+                // Ensure wakeLock is nullified if released externally or via our function
+                if (wakeLock) wakeLock = null;
+            });
+        } catch (err) {
+            console.error(`Screen Wake Lock request failed: ${err.name}, ${err.message}`);
+            wakeLock = null;
+        }
+    } else {
+        console.warn('Screen Wake Lock API is not supported by this browser.');
+    }
+};
+
+const releaseWakeLock = async () => {
+    if (wakeLock !== null) {
+        try {
+            await wakeLock.release();
+            // The 'release' event listener above will set wakeLock to null
+        } catch (err) {
+            console.error(`Screen Wake Lock release failed: ${err.name}, ${err.message}`);
+            // Force nullification even if release fails to avoid inconsistent state
+            wakeLock = null;
+        }
+    }
+};
+
+// Handle page visibility changes for Wake Lock
+const handleVisibilityChange = async () => {
+    if (wakeLock !== null && document.visibilityState === 'hidden') {
+        // Release the lock when the page is hidden, but don't change timer state
+        await releaseWakeLock();
+        console.log('Wake Lock released due to page becoming hidden.');
+    } else if (document.visibilityState === 'visible' && !isPaused) {
+        // If the page becomes visible AND the timer should be running (isPaused is false),
+        // re-acquire the lock.
+        console.log('Reacquiring Wake Lock after page became visible.');
+        await requestWakeLock();
+    }
+};
 
 // --- Utility Functions ---
 function applyTheme(theme) {
@@ -197,6 +247,7 @@ function startTimer() {
     }
 
     isPaused = false;
+    requestWakeLock(); // Request wake lock when timer starts
     updateButtonStates();
     clearInterval(timerInterval); // Clear any lingering intervals
     timerInterval = null;
@@ -259,6 +310,7 @@ function startTimer() {
         // Check if break/long break session has ended
         if (currentSession !== 'work' && timeLeft < 0) {
             clearInterval(timerInterval);
+            releaseWakeLock(); // Release wake lock when timer stops automatically
             timerInterval = null;
             isPaused = true; // Pause automatically when break ends
             updateProgressBar(100); // Ensure progress bar is full
@@ -273,6 +325,7 @@ function startTimer() {
 
 function pauseTimer() {
     if (isPaused) return;
+    releaseWakeLock(); // Release wake lock when timer is paused
     isPaused = true;
     updateButtonStates();
     clearInterval(timerInterval);
@@ -314,6 +367,7 @@ function handleMainActionClick() {
     } else { // Timer is running
         if (currentSession === 'work') {
             // Running work: Just set up and start the break. NO redirection here.
+            releaseWakeLock(); // Release lock before starting break
 
             // 1. Set up the break state (pass false to avoid resetting work time)
             setTimeForSession('break', false);
@@ -341,9 +395,11 @@ function handleMainActionClick() {
 
 function handleLongBreakResetClick() {
     if (currentSession === 'longBreak') {
+        releaseWakeLock(); // Release lock before resetting
         // If currently in a long break (running or paused), reset the whole timer
         resetTimer();
     } else {
+        releaseWakeLock(); // Release lock before starting long break
         // If in work or normal break, switch to long break mode AND redirect
 
         const taskSelectEl = document.getElementById('taskSelection');
@@ -391,6 +447,7 @@ function handleLongBreakResetClick() {
 }
 
 function resetTimer() {
+    releaseWakeLock(); // Ensure lock is released on full reset
     pauseTimer();
     currentSession = 'work';
     readSettings();
@@ -585,5 +642,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (taskSelectEl) {
         taskSelectEl.disabled = true;
     }
+
+    // Add listeners for Wake Lock visibility and unload
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', releaseWakeLock); // Release on unload as safeguard
 
 }); // End of DOMContentLoaded listener
